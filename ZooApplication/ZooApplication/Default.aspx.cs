@@ -70,6 +70,11 @@ namespace ZooApplication
                         {
                             Response.Redirect("Veterinary.aspx");
                         }
+
+                        if (department.Equals("admin"))
+                        {
+                            Response.Redirect("Admin.aspx");
+                        }
                     }
                     else
                     {
