@@ -14,7 +14,7 @@
             <!-- User Input -->
             <div class="form-horizontal">
 
-                <!-- Enter member type -->
+                <!-- Select member type -->
                 <div class="form-group">
                     <asp:Label runat="server" CssClass="control-label col-md-3">Member type</asp:Label>
                     <div class="col-md-4">
@@ -58,7 +58,7 @@
                     <asp:TextBox ID="inCity" runat="server" CssClass="form-control col-md-3"></asp:TextBox>
                 </div>
 
-                <!-- Enter state -->
+                <!-- Select state -->
                 <div class="form-group">
                     <asp:Label runat="server" CssClass="control-label col-md-3">State</asp:Label>
                     <div class="col-md-4">

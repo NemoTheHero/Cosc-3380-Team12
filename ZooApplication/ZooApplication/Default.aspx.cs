@@ -56,9 +56,19 @@ namespace ZooApplication
                         System.Diagnostics.Debug.WriteLine("Successfully authenticated user");
                         string department = Convert.ToString(result).Trim().ToLower();
 
-                        if (department == "member services")
+                        if (department.Equals("member services"))
                         {
                             Response.Redirect("MemberServices.aspx");
+                        }
+
+                        if (department.Equals("maintenance"))
+                        {
+                            Response.Redirect("Maintenance.aspx?username=" + username);
+                        }
+
+                        if (department.Equals("veterinary"))
+                        {
+                            Response.Redirect("Veterinary.aspx");
                         }
                     }
                     else
