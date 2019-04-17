@@ -128,11 +128,15 @@ CREATE TABLE ENUM_UNIT_MEASURE (
 
 CREATE TABLE ENUM_WORK_ORDER_TYPE (
 	order_type_id			INT UNSIGNED			NOT NULL,
-	order_type_name			VARCHAR(15)				NOT NULL,
+	order_type_name			VARCHAR(30)				NOT NULL,
+    facility_type			INT UNSIGNED			NOT NULL,
 	CONSTRAINT ENUM_WORK_ORDER_TYPE_PK
 		PRIMARY KEY (order_type_id),
 	CONSTRAINT ENUM_WORK_ORDER_TYPE_CK
-		UNIQUE (order_type_name)
+		UNIQUE (order_type_name),
+	CONSTRAINT ORDER_FACILITY_TYPE_FK
+		FOREIGN KEY (facility_type) REFERENCES ENUM_FACILITY_TYPE(facility_type_id)
+			ON DELETE RESTRICT		ON UPDATE CASCADE
 );
 /********************* END ENUMERATED DATA TYPES *********************/
 CREATE TABLE HEALTH_PROFILE (
@@ -273,6 +277,17 @@ CREATE TABLE EMPLOYEE (
 			ON DELETE RESTRICT		ON UPDATE CASCADE
 );
 
+CREATE TABLE ANIMAL_HANDLER (
+	animal_id				INT UNSIGNED			NOT NULL,
+    empl_id					INT UNSIGNED			NOT NULL,
+    CONSTRAINT ANIMAL_ID_FK
+		FOREIGN KEY (animal_id) REFERENCES ANIMAL(animal_id)
+			ON DELETE CASCADE		ON UPDATE CASCADE,
+	CONSTRAINT EMPL_ID_FK
+		FOREIGN KEY (empl_id) REFERENCES EMPLOYEE(empl_id)
+			ON DELETE CASCADE		ON UPDATE CASCADE
+);
+
 CREATE TABLE MEMBERSHIP (
 	member_id				INT UNSIGNED			NOT NULL,
     member_type				INT UNSIGNED			NOT NULL,
@@ -296,6 +311,7 @@ CREATE TABLE MEMBERSHIP (
 
 CREATE TABLE FACILITY (
 	facility_id				INT UNSIGNED		NOT NULL,
+    facility_name			VARCHAR(30)			NOT NULL,
 	facility_type			INT UNSIGNED		NOT NULL,
 	facility_status			INT UNSIGNED		NOT NULL,
     section					INT UNSIGNED		NOT NULL,
@@ -315,11 +331,10 @@ CREATE TABLE FACILITY (
 CREATE TABLE WORK_ORDER (
 	order_id		INT UNSIGNED		NOT NULL,
     order_type		INT UNSIGNED		NOT NULL,
-    order_date		DATETIME			NOT NULL,
+    order_date		DATE				NOT NULL,
     facility		INT UNSIGNED		NOT NULL,
 	ordered_by		INT UNSIGNED		NOT NULL,
     assigned_to		INT UNSIGNED		NOT NULL,
-    order_status	INT UNSIGNED		NOT NULL,
 	CONSTRAINT WORK_ORDER_PK
 		PRIMARY KEY (order_id),
 	CONSTRAINT WORK_ORDER_TYPE_FK
@@ -346,3 +361,18 @@ CREATE TABLE USER_LOGIN (
 		FOREIGN KEY (user_id) REFERENCES EMPLOYEE(empl_id)
 			ON DELETE CASCADE		ON UPDATE CASCADE
 );
+/********************* BEGIN TRIGGERS *********************/
+CREATE TRIGGER update_facility_status
+BEFORE INSERT ON work_order
+FOR EACH ROW
+UPDATE facility AS f, enum_facility_status AS s
+SET f.facility_status = s.facility_status_id
+WHERE s.facility_status_name = 'out of order' AND f.facility_id = NEW.facility;
+
+CREATE TRIGGER on_delete_work_order
+BEFORE DELETE ON work_order
+FOR EACH ROW
+UPDATE facility AS f, enum_facility_status AS s
+SET f.facility_status = s.facility_status_id
+WHERE s.facility_status_name = 'working' AND f.facility_id = OLD.facility;
+/********************* END TRIGGERS *********************/
