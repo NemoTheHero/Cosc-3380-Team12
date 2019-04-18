@@ -19,6 +19,7 @@ namespace ZooApplication
 
         protected void Page_Load(object sender, EventArgs e)
         {
+            // if is initial page load
             if (!IsPostBack)
             {
                 // Create listMemberType by data binding
