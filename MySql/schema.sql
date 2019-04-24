@@ -245,7 +245,7 @@ CREATE TABLE ANIMAL (
 );
 
 CREATE TABLE CONTACT (
-    phone_no				INT UNSIGNED			NOT NULL,
+    phone_no				VARCHAR(10)			NOT NULL,
     email_addr				VARCHAR(30)				NOT NULL,
     addr_line				VARCHAR(30)				NOT NULL,
     city					VARCHAR(15)				NOT NULL,
@@ -261,7 +261,7 @@ CREATE TABLE EMPLOYEE (
 	empl_id					INT UNSIGNED			NOT NULL,
     first_name				VARCHAR(15)				NOT NULL,
     last_name				VARCHAR(15)				NOT NULL,
-    contact_info			INT UNSIGNED			NOT NULL,
+    contact_info			VARCHAR(10)				NOT NULL,
     job_position			INT UNSIGNED			NOT NULL,
     department				INT UNSIGNED			NOT NULL,
     CONSTRAINT EMPL_PK
@@ -293,7 +293,7 @@ CREATE TABLE MEMBERSHIP (
     member_type				INT UNSIGNED			NOT NULL,
     first_name				VARCHAR(15)				NOT NULL,
     last_name				VARCHAR(15)				NOT NULL,
-    primary_contact			INT UNSIGNED			NOT NULL,
+    primary_contact			VARCHAR(10)				NOT NULL,
     registration_date		DATE					NOT NULL,
     member_status			INT UNSIGNED			NOT NULL,
     CONSTRAINT MEMBER_PK
@@ -306,7 +306,9 @@ CREATE TABLE MEMBERSHIP (
 			ON DELETE RESTRICT		ON UPDATE CASCADE,
     CONSTRAINT MEMBER_STATUS_FK
 		FOREIGN KEY (member_status) REFERENCES ENUM_MEMBERSHIP_STATUS(member_status_id)
-			ON DELETE RESTRICT		ON UPDATE CASCADE
+			ON DELETE RESTRICT		ON UPDATE CASCADE,
+	CONSTRAINT MEMBERSHIP_UNIQUE_CONTACT
+		UNIQUE(primary_key)
 );
 
 CREATE TABLE FACILITY (
@@ -375,4 +377,10 @@ FOR EACH ROW
 UPDATE facility AS f, enum_facility_status AS s
 SET f.facility_status = s.facility_status_id
 WHERE s.facility_status_name = 'working' AND f.facility_id = OLD.facility;
+
+CREATE TRIGGER generate_user_login
+AFTER INSERT ON employee
+FOR EACH ROW
+INSERT INTO user_login
+SELECT NEW.empl_id, CONCAT(NEW.first_name, NEW.last_name), CONCAT(NEW.first_name, NEW.last_name) from user_login;
 /********************* END TRIGGERS *********************/
