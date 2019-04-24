@@ -245,7 +245,7 @@ CREATE TABLE ANIMAL (
 );
 
 CREATE TABLE CONTACT (
-    phone_no				INT UNSIGNED			NOT NULL,
+    phone_no				VARCHAR(10)			NOT NULL,
     email_addr				VARCHAR(30)				NOT NULL,
     addr_line				VARCHAR(30)				NOT NULL,
     city					VARCHAR(15)				NOT NULL,
@@ -306,7 +306,9 @@ CREATE TABLE MEMBERSHIP (
 			ON DELETE RESTRICT		ON UPDATE CASCADE,
     CONSTRAINT MEMBER_STATUS_FK
 		FOREIGN KEY (member_status) REFERENCES ENUM_MEMBERSHIP_STATUS(member_status_id)
-			ON DELETE RESTRICT		ON UPDATE CASCADE
+			ON DELETE RESTRICT		ON UPDATE CASCADE,
+	CONSTRAINT MEMBERSHIP_UNIQUE_CONTACT
+		UNIQUE(primary_key)
 );
 
 CREATE TABLE FACILITY (
@@ -375,4 +377,10 @@ FOR EACH ROW
 UPDATE facility AS f, enum_facility_status AS s
 SET f.facility_status = s.facility_status_id
 WHERE s.facility_status_name = 'working' AND f.facility_id = OLD.facility;
+
+CREATE TRIGGER generate_user_login
+AFTER INSERT ON employee
+FOR EACH ROW
+INSERT INTO user_login
+SELECT NEW.empl_id, CONCAT(NEW.first_name, NEW.last_name), CONCAT(NEW.first_name, NEW.last_name) from user_login;
 /********************* END TRIGGERS *********************/

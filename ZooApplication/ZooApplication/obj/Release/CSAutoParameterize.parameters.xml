@@ -1,0 +1,12 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<parameters>
+  <parameter name="DefaultConnection-Web.config Connection String" description="DefaultConnection Connection String used in web.config by the application to access the database." defaultValue="Data Source=(LocalDb)\MSSQLLocalDB;AttachDbFilename=|DataDirectory|\aspnet-ZooApplication-20190404013438.mdf;Initial Catalog=aspnet-ZooApplication-20190404013438;Integrated Security=True" tags="SqlConnectionString">
+    <parameterEntry kind="XmlFile" scope="C:\\Users\\Ryan\\Documents\\Visual\ Studio\ 2017\\Projects\\ZooApplication\\ZooApplication\\obj\\Release\\Package\\PackageTmp\\Web\.config$" match="/configuration/connectionStrings/add[@name='DefaultConnection']/@connectionString" />
+  </parameter>
+  <parameter name="AzureMySQLConnection-Web.config Connection String" description="AzureMySQLConnection Connection String used in web.config by the application to access the database." defaultValue="server=cosc3380-02-team12.mysql.database.azure.com;uid=team12admin@cosc3380-02-team12;pwd=Team 12 is the very best team.;database=zoo" tags="SqlConnectionString">
+    <parameterEntry kind="XmlFile" scope="C:\\Users\\Ryan\\Documents\\Visual\ Studio\ 2017\\Projects\\ZooApplication\\ZooApplication\\obj\\Release\\Package\\PackageTmp\\Web\.config$" match="/configuration/connectionStrings/add[@name='AzureMySQLConnection']/@connectionString" />
+  </parameter>
+  <parameter name="cosc3380-02-team12.mysql.database.azure.com_zoo_Connection-Web.config Connection String" description="cosc3380-02-team12.mysql.database.azure.com_zoo_Connection Connection String used in web.config by the application to access the database." defaultValue="XpoProvider=MySql;server=cosc3380-02-team12.mysql.database.azure.com;port=3306;user id=team12admin@cosc3380-02-team12; password=Team 12 is the very best team.; database=zoo;persist security info=true;CharSet=utf8;" tags="SqlConnectionString">
+    <parameterEntry kind="XmlFile" scope="C:\\Users\\Ryan\\Documents\\Visual\ Studio\ 2017\\Projects\\ZooApplication\\ZooApplication\\obj\\Release\\Package\\PackageTmp\\Web\.config$" match="/configuration/connectionStrings/add[@name='cosc3380-02-team12.mysql.database.azure.com_zoo_Connection']/@connectionString" />
+  </parameter>
+</parameters>
